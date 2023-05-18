@@ -3,30 +3,28 @@ import { db } from "../config/database.js";
 import bcrypt from "bcrypt";
 
 
-export async function register (req, res) {
+export async function register (_, res) {
 
-  const { name, email, password } = req.body;
-  const personalPass = bcrypt.hashSync(password, 10);
+    const { email, password, name } = res.locals.value;
 
-  try {
+    try {
 
-    const analysis = await db.query(`SELECT * FROM users WHERE email = $1;`, [email,]);
+      const invalid = await db.query('SELECT * FROM "users" where "email" = $1', [email] );
 
-    if (analysis.rowCount) 
+      if (invalid.rowCount !== 0) return res.sendStatus(409);
+      console.log('invalid');
 
-    return res.sendStatus(409);
-    console.log('invalid');
+      const myPass = bcrypt.hashSync(password, 10);
 
-    await db.query(`INSERT INTO users (name, email, password) VALUES ($1, $2, $3);`,[name, email, personalPass]);
+      await db.query( `    INSERT INTO "user_account" ("email", "name", "password") values($1, $2, $3)`,[email, name, myPass] );
+      
+      console.log('ok');
+      return res.sendStatus(201);
 
-    return res.sendStatus(201);
-    console.log('ok');
+    } catch {
 
-  } catch (err) {
-
-    return res.sendStatus(500);
-    console.log('error');
-
+      console.log('error');
+      return res.sendStatus(500);
+    }
   }
 
-}
