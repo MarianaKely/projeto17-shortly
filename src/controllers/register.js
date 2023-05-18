@@ -16,7 +16,7 @@ export async function register (_, res) {
 
       const myPass = bcrypt.hashSync(password, 10);
 
-      await db.query( `    INSERT INTO "user_account" ("email", "name", "password") values($1, $2, $3)`,[email, name, myPass] );
+      await db.query( `    INSERT INTO "users" ("email", "name", "password") values($1, $2, $3)`,[email, name, myPass] );
       
       console.log('ok');
       return res.sendStatus(201);
