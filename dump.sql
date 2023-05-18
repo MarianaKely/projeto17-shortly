@@ -21,14 +21,14 @@ SET default_tablespace = '';
 SET default_table_access_method = heap;
 
 --
--- Name: session; Type: TABLE; Schema: public; Owner: -
+-- Name: logins; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.session (
+CREATE TABLE public.logins (
     id integer NOT NULL,
     "userId" integer NOT NULL,
     token text NOT NULL,
-    "createdAt" date DEFAULT now() NOT NULL
+    "createdAt" timestamp without time zone DEFAULT now() NOT NULL
 );
 
 
@@ -42,7 +42,7 @@ CREATE TABLE public.url (
     "shortUrl" text NOT NULL,
     "userId" integer NOT NULL,
     "visitCount" integer DEFAULT 0 NOT NULL,
-    "createdAt" date DEFAULT now() NOT NULL
+    "createdAt" timestamp without time zone DEFAULT now() NOT NULL
 );
 
 
@@ -55,13 +55,13 @@ CREATE TABLE public.users (
     name text NOT NULL,
     email text NOT NULL,
     password text NOT NULL,
-    "createdAt" date DEFAULT now() NOT NULL,
+    "createdAt" timestamp without time zone DEFAULT now() NOT NULL,
     CONSTRAINT check_it CHECK ((email ~~ '%_@__%.__%'::text))
 );
 
 
 --
--- Data for Name: session; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: logins; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 
