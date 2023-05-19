@@ -6,6 +6,7 @@ import shortSignUpSchema from "../schemas/registerSchema.js";
 import shortSignInSchema from "../schemas/loginSchema.js";
 import { shortSignUp , shortSignIn , shortUsers , shortRankings } from "../controllers/register.js";
 
+
 const registerRouter = Router();
 
 registerRouter.post("/signup", middlewareSchema(shortSignUpSchema), shortSignUp);
