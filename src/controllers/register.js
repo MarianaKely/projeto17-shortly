@@ -32,4 +32,33 @@ export async function shortSignUp (req, res) {
 
 
 
+export async function shortSignIn (req, res) {
+
+  const { email, password } = req.body;
+
+  try {
+
+    const analysis = await db.query(`SELECT * FROM users WHERE email = $1;`, [email,]);
+    const user = analysis.rows[0];
+
+    if (!analysis.rowCount || !bcrypt.compareSync(password, user.password)) return res.sendStatus(401);
+    console.log('not found');
+
+    const token = uuid();
+
+    await db.query(`INSERT INTO logins ("userId", token) VALUES ($1, $2);`, [user.id, token,]);
+
+    res.status(200).send({ token });
+    console.log('your token');
+
+  } catch (err) {
+ 
+    console.log('error');
+    return res.status(500).send(err.message);
+
+  }
+
+}
+
+
 

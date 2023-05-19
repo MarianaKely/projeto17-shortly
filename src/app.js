@@ -2,7 +2,7 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import registerRouters from "./routers/registerRouter.js";
+import registerRouter from "./routers/registerRouter.js";
 
 dotenv.config();
 
@@ -10,7 +10,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.use(registerRouters);
+app.use(registerRouter);
 
 
 const PORT = process.env.PORT || 5000;
