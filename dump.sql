@@ -33,6 +33,26 @@ CREATE TABLE public.logins (
 
 
 --
+-- Name: logins_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.logins_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: logins_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.logins_id_seq OWNED BY public.logins.id;
+
+
+--
 -- Name: url; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -47,6 +67,26 @@ CREATE TABLE public.url (
 
 
 --
+-- Name: url_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.url_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: url_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.url_id_seq OWNED BY public.url.id;
+
+
+--
 -- Name: users; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -58,6 +98,47 @@ CREATE TABLE public.users (
     "createdAt" timestamp without time zone DEFAULT now() NOT NULL,
     CONSTRAINT check_it CHECK ((email ~~ '%_@__%.__%'::text))
 );
+
+
+--
+-- Name: users_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.users_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
+
+
+--
+-- Name: logins id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.logins ALTER COLUMN id SET DEFAULT nextval('public.logins_id_seq'::regclass);
+
+
+--
+-- Name: url id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.url ALTER COLUMN id SET DEFAULT nextval('public.url_id_seq'::regclass);
+
+
+--
+-- Name: users id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_id_seq'::regclass);
 
 
 --
@@ -76,6 +157,51 @@ CREATE TABLE public.users (
 -- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: -
 --
 
+
+
+--
+-- Name: logins_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('public.logins_id_seq', 1, false);
+
+
+--
+-- Name: url_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('public.url_id_seq', 1, false);
+
+
+--
+-- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('public.users_id_seq', 1, false);
+
+
+--
+-- Name: logins logins_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.logins
+    ADD CONSTRAINT logins_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: url url_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.url
+    ADD CONSTRAINT url_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_pkey PRIMARY KEY (id);
 
 
 --
