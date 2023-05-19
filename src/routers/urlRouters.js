@@ -1,0 +1,15 @@
+
+import { Router } from "express";
+import middlewareSchema from "../middlewares/middleware.js";
+import shortToken from "../middlewares/token.js";
+import shortUrlSchema from "../schemas/urlSchema.js";
+import { shortShorten , shortIdUrl , shortOpen , shortDelete } from "../controllers/urls.js";
+
+
+
+
+const urlsRouter = Router();
+urlsRouter.post("/urls/shorten", middlewareSchema(shortUrlSchema), shortToken, shortShorten);
+
+
+export default urlsRouter;
