@@ -9,7 +9,9 @@ import { shortShorten , shortIdUrl , shortOpen , shortDelete } from "../controll
 
 
 const urlsRouter = Router();
+
 urlsRouter.post("/urls/shorten", middlewareSchema(shortUrlSchema), shortToken, shortShorten);
+urlsRouter.get("/urls/:id", shortIdUrl);
 
 
 export default urlsRouter;
