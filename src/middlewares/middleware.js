@@ -1,20 +1,16 @@
 
 export default function middlewareSchema (schema) {
 
-    return function (req, res, next) {
+    return (req, res, next) => {
 
-      const { invalid, analysis } = schema.validate(req.body, { abortEarly: false, convert: true, });
+      const analysis = schema.validate(req.body, { abortEarly: false });
 
-      if (invalid) {
-
-        const message = invalid.details.map((err) => err.message);
-
-        console.log('error'); 
-        return res.status(422).send(message);
+      if (analysis.error) {
+  
+        console.log('found error');
+        return res.status(422).send(analysis.error.details.map((param) => param.message));
 
       }
-
-      res.locals.value = analysis;
 
       next();
       console.log('ok');
