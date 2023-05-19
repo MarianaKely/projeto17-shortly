@@ -38,3 +38,30 @@ export async function shortShorten (req, res) {
 
 
 
+
+export async function shortIdUrl (req, res) {
+
+  const { id } = req.params;
+
+  try {
+
+    const theUrl = await db.query(`SELECT * FROM url WHERE id = $1;`, [id]);
+
+    if (!theUrl.rowCount) return res.sendStatus(404);
+
+    const url = theUrl.rows[0];
+
+    console.log('ok');
+    return res.status(200).send({ id: url.id, shortUrl: url.shortUrl, url: url.url });
+
+  } catch (err) {
+
+    console.log('error');
+    return res.status(500).send(err.message);
+
+  }
+
+}
+
+
+
