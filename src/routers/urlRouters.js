@@ -13,6 +13,6 @@ const urlsRouter = Router();
 urlsRouter.post("/urls/shorten", middlewareSchema(shortUrlSchema), shortToken, shortShorten);
 urlsRouter.get("/urls/:id", shortIdUrl);
 urlsRouter.get("/urls/open/:shortUrl", shortOpen);
-
+urlsRouter.delete("/urls/:id", shortToken, shortDelete);
 
 export default urlsRouter;
