@@ -1,30 +1,35 @@
 
 import { db } from "../config/database.js";
 import bcrypt from "bcrypt";
+import { v4 as uuid } from "uuid";
 
 
-export async function register (_, res) {
+export async function shortSignUp (req, res) {
 
-    const { email, password, name } = res.locals.value;
+  const { name, email, password } = req.body;
+  const personalPass = bcrypt.hashSync(password, 10);
 
-    try {
+  try {
 
-      const invalid = await db.query('SELECT * FROM "users" where "email" = $1', [email] );
+    const analysis = await db.query(`SELECT * FROM users WHERE email = $1;`, [email,]);
 
-      if (invalid.rowCount !== 0) return res.sendStatus(409);
-      console.log('invalid');
+    console.log('invalid');
+    if (analysis.rowCount) return res.sendStatus(409);
+    
+    await db.query(`INSERT INTO users (name, email, password) VALUES ($1, $2, $3);`,[name, email, personalPass]);
+ 
+    console.log('ok');
+    return res.sendStatus(201);
 
-      const myPass = bcrypt.hashSync(password, 10);
+  } catch (err) {
 
-      await db.query( `    INSERT INTO "users" ("email", "name", "password") values($1, $2, $3)`,[email, name, myPass] );
-      
-      console.log('ok');
-      return res.sendStatus(201);
+    console.log('error');
+    return res.status(500).send(err.message);
 
-    } catch {
-
-      console.log('error');
-      return res.sendStatus(500);
-    }
   }
+
+}
+
+
+
 
