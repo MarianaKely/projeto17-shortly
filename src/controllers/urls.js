@@ -65,3 +65,31 @@ export async function shortIdUrl (req, res) {
 
 
 
+export async function shortOpen (req, res) {
+
+  const { shortUrl } = req.params;
+
+  try {
+
+    const theUrl = await db.query(`SELECT * FROM url WHERE "shortUrl" = $1;`,[shortUrl]);
+
+    if (!theUrl.rowCount) return res.sendStatus(404);
+
+    const url = theUrl.rows[0].url;
+
+    await db.query(`UPDATE url SET "visitCount" = "visitCount" + 1 WHERE "shortUrl" = $1;`,[shortUrl]);
+
+    return res.redirect(url);
+
+  } catch (err) {
+
+    console.log('error');
+    return res.status(500).send(err.message);
+
+  }
+
+}
+
+
+
+
