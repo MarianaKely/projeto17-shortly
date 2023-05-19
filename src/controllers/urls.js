@@ -93,3 +93,38 @@ export async function shortOpen (req, res) {
 
 
 
+export async function shortDelete (req, res) {
+
+  const { id } = req.params;
+  const { token } = res.locals;
+
+  try {
+
+    const logins = await db.query(`SELECT * FROM logins WHERE token = $1;`,[token]);
+
+    if (!logins.rowCount) return res.sendStatus(401);
+    console.log('not found');
+
+    const login = logins.rows[0];
+    const urlQuery = await db.query(`SELECT * FROM url WHERE id = $1;`, [id]);
+
+    if (!urlQuery.rowCount) return res.sendStatus(404);
+
+    const url = urlQuery.rows[0];
+
+    if (url.userId !== login.userId) return res.sendStatus(401);
+    console.log('not found');
+
+    await db.query(`DELETE FROM url WHERE id = $1;`, [id]);
+
+    console.log('ok');
+    return res.sendStatus(204);
+
+  } catch (err) {
+
+    console.log('error');
+    return res.status(500).send(err.message);
+
+  }
+
+}
